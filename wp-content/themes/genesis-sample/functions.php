@@ -114,3 +114,70 @@ function genesis_sample_comments_gravatar( $args ) {
 	return $args;
 
 }
+//----sk-------------------------
+
+//* Enqueue Sitewide scripts and styles
+add_action( 'wp_enqueue_scripts', 'sk_sitewide_scripts_styles' );
+function sk_sitewide_scripts_styles() {
+
+	wp_enqueue_script( 'sitewide', get_stylesheet_directory_uri() . '/js/sitewide.js', array( 'jquery' ), '1.0.0', true );
+	wp_enqueue_style( 'dashicons' );
+
+}
+
+//* Register widget areas
+genesis_register_sidebar( array(
+	'id'          => 'horizontal-optin',
+	'name'        => __( 'Horizontal Optin', 'themename' ),
+	'description' => __( 'This is the Horizontal Opt-in form section', 'themename' ),
+) );
+genesis_register_sidebar( array(
+	'id'          => 'home-slider',
+	'name'        => __( 'Home Slider', 'themename' ),
+	'description' => __( 'This is the Home Slider section', 'themename' ),
+) );
+genesis_register_sidebar( array(
+	'id'          => 'home-featured-left',
+	'name'        => __( 'Home Featured Left', 'themename' ),
+	'description' => __( 'This is the Home Featured Left section', 'themename' ),
+) );
+genesis_register_sidebar( array(
+	'id'          => 'home-featured-right',
+	'name'        => __( 'Home Featured Right', 'themename' ),
+	'description' => __( 'This is the Home Featured Right section', 'themename' ),
+) );
+genesis_register_sidebar( array(
+	'id'          => 'home-blog',
+	'name'        => __( 'Home Blog', 'themename' ),
+	'description' => __( 'This is the Home Blog section', 'themename' ),
+) );
+genesis_register_sidebar( array(
+	'id'          => 'home-testimonials',
+	'name'        => __( 'Home Testimonials', 'themename' ),
+	'description' => __( 'This is the Home Testimonials section', 'themename' ),
+) );
+
+add_action( 'genesis_after_header', 'sk_optin_below_header' );
+/**
+ * Display Home Optin widget area below the header
+ *
+ * Context: Everywhere excerpt the front page
+ *
+ * @author Sridhar Katakam
+ * @link   http://sridharkatakam.com/collapsible-horizontal-opt-form-genesis/
+ */
+function sk_optin_below_header() {
+
+	if ( is_front_page() ) {
+		return;
+	}
+
+	genesis_widget_area( 'horizontal-optin', array(
+		'before' => '<div class="horizontal-optin widget-area"><div class="wrap">',
+		'after' => '</div></div>',
+	));
+
+}
+
+//* Define a custom image size for Home Blog featured images
+add_image_size( 'home-blog', 648, 351, true );
